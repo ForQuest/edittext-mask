@@ -12,37 +12,36 @@ version = projectVersion
 group = projectGroup
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 29
+    buildToolsVersion '25.0.3'
 
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion 14
+        targetSdkVersion 29
         versionCode 1
         versionName projectVersion
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 }
 
 dependencies {
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestCompile('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.2.0'
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api 'androidx.appcompat:appcompat:1.1.0'
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
 
 // bintray deploy ....
 String projectName = "edittext-mask"
-String projectDescription = GFileUtils.readFile(new File("README.md"))
+//String projectDescription = GFileUtils.readFile(new File("README.md"))
 String webUrl = "https://github.com/egslava/edittext-mask"
 String gitUrl = "https://github.com/egslava/edittext-mask.git"
-
 
 install {
     repositories.mavenInstaller {
@@ -51,7 +50,7 @@ install {
                 packaging 'aar'
                 
                 name projectName
-                description projectDescription
+           //     description projectDescription
                 url webUrl
 
                 inceptionYear '2017' // HARDCODED
@@ -103,27 +102,4 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives javadocJar
     archives sourcesJar
-}
-
-bintray {
-    user = bintrayUser
-    key = bintrayApikey
-
-    configurations = ['archives']
-    pkg {
-        repo = "maven"
-        name = projectName
-        userOrg = user
-//        projectUrl = webUrl
-        vcsUrl = gitUrl
-        licenses = ["MIT"]
-        group = projectGroup
-        publish = true
-
-        version {
-            name = projectVersion
-//            desc = projectDescription
-            vcsTag = projectVersion
-        }
-    }
 }
